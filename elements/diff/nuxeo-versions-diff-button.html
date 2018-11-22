@@ -71,20 +71,24 @@ limitations under the License.
 
       _doDiff: function() {
         this.$$('#opGetVersions').execute().then(function(result) {
-          // sort the versions from the most to the least recent
-          var versions = result.entries.reverse();
+          // get all versions, oldest to newest ones
+          var versions = result.entries;
+          // get the current version
           var currentIndex = versions.findIndex(function(doc) {
             return this._getMajor(doc) === this._getMajor(this.document) &&
                    this._getMinor(doc) === this._getMinor(this.document);
           }.bind(this));
-          // and put the current one if the beginning of the list
+          // reset the versions array with the previous and current ones
           if (currentIndex > 0) {
+            // get current version
             var current = versions[currentIndex];
-            versions.splice(currentIndex, 1);
-            versions.unshift(current);
+            // get previous version
+            var previous = versions[currentIndex - 1];
+            // reset versions array
+            versions = [previous, current];
           }
           if (this.document.isCheckedOut) {
-            versions.unshift(this.document);
+            versions.push(this.document);
           }
           this.fire('nuxeo-diff-documents', {
             documents: versions
