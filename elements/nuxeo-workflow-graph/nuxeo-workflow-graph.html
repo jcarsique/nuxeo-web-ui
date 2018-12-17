@@ -18,6 +18,7 @@ limitations under the License.
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../../bower_components/nuxeo-elements/nuxeo-resource.html">
+<link rel="import" href="../../bower_components/nuxeo-ui-elements/nuxeo-i18n-behavior.html">
 
 <!-- Note: support for user supplied segments was removed in 2.0.5 -->
 <script src="../../bower_components/jsPlumb/dist/js/jsPlumb-2.0.4.js"></script>
@@ -29,7 +30,7 @@ limitations under the License.
 -->
 <dom-module id="nuxeo-workflow-graph">
   <template>
-    <style>
+    <style include="nuxeo-styles">
       :host {
         display: block;
       }
@@ -128,6 +129,12 @@ limitations under the License.
       .jsplumb-overlay {
         z-index: 6;
       }
+
+      a.viewGraph {
+        margin-right: 1em;
+        color: var(--nuxeo-primary-color, #0066ff);
+        font-weight: bolder;
+      }
     </style>
 
     <nuxeo-resource id="graphResource"
@@ -135,13 +142,22 @@ limitations under the License.
                     response="{{graph}}"
                     headers='{"Content-Type":"application/json"}'></nuxeo-resource>
 
-    <div id="container"></div>
+    <a class="viewGraph" on-tap="_toggleGraphDialog">[[i18n('documentPage.route.view.graph')]]</a>
+
+    <nuxeo-dialog id="graphDialog" with-backdrop>
+      <paper-dialog-scrollable>
+        <div id="container"></div>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>[[i18n('command.close')]]</paper-button>
+      </div>
+    </nuxeo-dialog>
   </template>
 
   <script>
     Polymer({
       is: 'nuxeo-workflow-graph',
-      behaviors: [Polymer.IronResizableBehavior],
+      behaviors: [Nuxeo.I18nBehavior, Polymer.IronResizableBehavior],
       properties: {
         workflowId: {
           type: String
@@ -196,7 +212,6 @@ limitations under the License.
       },
 
       observers: [
-        '_fetchGraph(workflowId)',
         '_updateGraph(graph)'
       ],
 
@@ -363,6 +378,11 @@ limitations under the License.
 
       _resize: function() {
         this._jsPlumbInstance.repaintEverything();
+      },
+
+      _toggleGraphDialog: function() {
+        this._fetchGraph();
+        this.$$('#graphDialog').toggle();
       }
 
     });
