@@ -25,7 +25,6 @@ limitations under the License.
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/actions/nuxeo-untrash-document-button.html">
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/nuxeo-layout-behavior.html">
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/widgets/nuxeo-date.html">
-<link rel="import" href="../../bower_components/nuxeo-ui-elements/widgets/nuxeo-dialog.html">
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/widgets/nuxeo-user-tag.html">
 <link rel="import" href="../nuxeo-publication/nuxeo-publication-info-bar.html">
 <link rel="import" href="../nuxeo-restore-version-button/nuxeo-restore-version-button.html">
@@ -94,12 +93,6 @@ limitations under the License.
           <paper-button class="primary" on-tap="_abandonWorkflow" noink>[[i18n('documentPage.abandon.workflow')]]</paper-button>
         </template>
       </div>
-      <nuxeo-dialog id="tasksDialog-[[workflow.id]]" with-backdrop>
-        <nuxeo-tasks-list id="taskLists" tasks="[[_wfTasks]]" no-navigation></nuxeo-tasks-list>
-        <div class="buttons">
-          <paper-button dialog-dismiss>[[i18n('command.close')]]</paper-button>
-        </div>
-      </nuxeo-dialog>
     </template>
 
     <!-- tasks -->
