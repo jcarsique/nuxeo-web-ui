@@ -65,19 +65,21 @@ limitations under the License.
         return this.$.layout.validate();
       },
 
-      _loadLayout: function(document, layout) {
-        if (document) {
-          if (!this.previousDocument || (document.type === this.previousDocument.type)) {
-            this._model = {document: document};
+      _loadLayout: function(doc, layout) {
+        if (doc) {
+          if (!this.previousDocument || (doc.type === this.previousDocument.type)) {
+            this._model = {document: doc};
           }
-          if (!this.previousDocument || (document.uid !== this.previousDocument.uid)) {
+          if (!this.previousDocument || (doc.uid !== this.previousDocument.uid)) {
             this._href = null; // force layout restamp
           }
-          var doctype = document.type.toLowerCase();
+          var doctype = doc.type.toLowerCase();
           var name = ['nuxeo', doctype, layout, 'layout'].join('-');
           this._href = this.resolveUrl(doctype + '/' + name + '.html');
+          this.previousDocument = doc;
+        } else {
+          this._model = {document: null};
         }
-        this.previousDocument = document;
       },
 
       _elementChanged: function() {
