@@ -24,6 +24,7 @@ limitations under the License.
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/nuxeo-icons.html">
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/nuxeo-slots.html">
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/nuxeo-format-behavior.html">
+<link rel="import" href="../../bower_components/nuxeo-ui-elements/widgets/nuxeo-tooltip.html">
 <link rel="import" href="../../bower_components/nuxeo-ui-elements/widgets/nuxeo-uploader-behavior.html">
 
 <!--
@@ -138,6 +139,10 @@ limitations under the License.
           </div>
           <div class="actions" hidden$="[[!_areActionsVisible(hasFiles, updateDocument, uploading)]]">
             <paper-icon-button noink icon="nuxeo:delete" on-tap="_deleteFile"></paper-icon-button>
+          </div>
+          <div class="" hidden$="[[!_showAbort(uploading)]]">
+            <paper-icon-button noink icon="icons:cancel" on-tap="_abortUpload"></paper-icon-button>
+            <nuxeo-tooltip>[[i18n('dropzone.abort')]]</nuxeo-tooltip>
           </div>
         </div>
       </template>
@@ -343,6 +348,13 @@ limitations under the License.
         }
       },
 
+      _abortUpload: function(e) {
+        if (this.hasAbort()) {
+          this.abort(this.files[e.model.itemsIndex]);
+          this.splice('files', e.model.itemsIndex, 1);
+        }
+      },
+
       _deleteFile: function(e) {
         if (!this.updateDocument && this.blobList && Array.isArray(this.get('document.properties.' + this._parsedXpath))) {
           this.splice('document.properties.' + this._parsedXpath, e.model.itemsIndex, 1);
@@ -408,6 +420,10 @@ limitations under the License.
           blob: (Nuxeo.UI && Nuxeo.UI.config && Nuxeo.UI.config.enrichers && Nuxeo.UI.config.enrichers.blob)
             || ['appLinks']
         };
+      },
+
+      _showAbort: function(uploading) {
+        return uploading && this.hasAbort();
       },
 
       /**
