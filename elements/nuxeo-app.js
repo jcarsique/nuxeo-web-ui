@@ -547,7 +547,7 @@ Polymer({
     <nuxeo-operation id="moveDocumentsOp" sync-indexing=""></nuxeo-operation>
 
     <nuxeo-resource id="tasks" path="/task" headers="{&quot;X-NXfetch.task&quot;: &quot;targetDocumentIds,actors&quot;}"></nuxeo-resource>
-    <nuxeo-resource id="task" path="/task/[[currentTaskId]]" headers="{&quot;X-NXfetch.task&quot;: &quot;targetDocumentIds,actors&quot;}"></nuxeo-resource>
+    <nuxeo-resource id="task" path="/task/[[currentTaskId]]" headers='{"X-NXfetch.document": "properties", "X-NXfetch.task": "targetDocumentIds,actors"}'></nuxeo-resource>
 
     <!-- app layout -->
     <paper-drawer-panel id="drawerPanel" narrow="{{isNarrow}}" drawer-width="[[drawerWidth]]" responsive-width="720px" edge-swipe-sensitivity="0">
