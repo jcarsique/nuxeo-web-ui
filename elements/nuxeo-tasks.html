@@ -43,6 +43,11 @@ limitations under the License.
         border: 1px solid var(--nuxeo-border);
       }
 
+      .task-infos {
+        width: 50%;
+        flex: none;
+      }
+
       .task-info {
         margin-left: .5em;
       }
@@ -76,6 +81,16 @@ limitations under the License.
         color: white;
         padding: .4em;
         margin-right: 1em;
+      }
+
+      .task-situation {
+        width: calc(50% - 150px);
+        flex: none;
+      }
+
+      .task-date {
+        width: 150px;
+        flex: none;
       }
 
       .date {
@@ -144,7 +159,7 @@ limitations under the License.
           <div class="task-list layout vertical">
             <template is="dom-repeat" items="[[tasks]]" as="task">
               <div class="task-item task-box layout horizontal" on-tap="_process">
-                <div class="layout horizontal flex">
+                <div class="task-infos layout horizontal flex">
                   <iron-icon icon="icons:content-paste" class="task-name-icon"></iron-icon>
                   <div class="task-info layout vertical">
                     <span class="task-name">[[i18n(task.name)]]</span>
@@ -152,7 +167,7 @@ limitations under the License.
                     <span class="workflow-name">[[i18n(task.workflowModelName)]]</span>
                   </div>
                 </div>
-                <div class="layout vertical flex">
+                <div class="task-situation layout vertical flex">
                   <div>
                     <div class="taskDoc">
                       <span class="task-property">[[i18n('tasksList.on')]]</span>
@@ -164,7 +179,7 @@ limitations under the License.
                     </div>
                   </div>
                 </div>
-                <div class="vertical layout">
+                <div class="task-date vertical layout">
                   <span class="task-property">[[i18n('tasksList.dueDate')]]</span>
                   <span class="date"><nuxeo-date datetime="[[task.dueDate]]" format="relative"></nuxeo-date></span>
                 </div>
