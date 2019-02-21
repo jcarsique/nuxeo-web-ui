@@ -25,10 +25,15 @@ limitations under the License.
 <%@ page import="org.nuxeo.ecm.web.resources.api.service.WebResourceManager"%>
 <%@ page import="org.nuxeo.ecm.core.api.repository.RepositoryManager"%>
 <%@ page import="org.nuxeo.common.utils.UserAgentMatcher"%>
+<%@ page import="org.nuxeo.connect.packages.PackageManager"%>
+<%@ page import="java.nio.file.Files"%>
+<%@ page import="java.nio.file.Path"%>
+<%@ page import="java.nio.file.Paths"%>
 
 <% WebResourceManager wrm = Framework.getService(WebResourceManager.class); %>
 <% RepositoryManager rm = Framework.getService(RepositoryManager.class); %>
 <% ConfigurationService cs = Framework.getService(ConfigurationService.class); %>
+<% PackageManager pm = Framework.getService(PackageManager.class); %>
 <% String ua = request.getHeader("user-agent"); %>
 <% String context = request.getContextPath(); %>
 
@@ -104,8 +109,13 @@ limitations under the License.
     Nuxeo.UI.config = <%= cs.getPropertiesAsJson("org.nuxeo.web.ui") %>;
   </script>
 
-  <% for (Resource resource : wrm.getResources(new ResourceContextImpl(), "web-ui", "import")) { %>
-  <link rel="import" href="<%= context %><%= resource.getURI() %>">
+  <link rel="import" href="<%= context %>/ui/nuxeo-app.html">
+  <link rel="import" href="<%= context %>/ui/nuxeo-web-ui-bundle.html">
+  <% for (String pn : pm.listInstalledPackagesNames(null)) {
+    Path path = Paths.get("nxserver/nuxeo.war/ui/" + pn + "/" + pn + ".html");
+    if (Files.exists(path)) { %>
+        <link rel="import" href='<%= context %><%= "/ui/" + pn + "/" + pn + ".html" %>'>
+    <% } %>
   <% } %>
 
   <!-- routing -->
